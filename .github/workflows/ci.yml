@@ -1,11 +1,11 @@
-name: CI Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,3 +22,6 @@ jobs:
 
       - name: Run tests
         run: python3 test_api.py
+
+      - name: Build Docker Image
+        run: docker build -t flask-app .
