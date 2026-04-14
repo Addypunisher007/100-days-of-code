@@ -1,17 +1,15 @@
-from app import app
+import requests
 
-client = app.test_client()
+BASE_URL = "http://localhost:5001"
 
-response = client.get('/data')
+def test_valid_input():
+    response = requests.post(f"{BASE_URL}/submit", json={"name": "Aditya"})
+    assert response.status_code == 200
 
-print("Status Code:", response.status_code)
+def test_missing_name():
+    response = requests.post(f"{BASE_URL}/submit", json={})
+    assert response.status_code == 400
 
-data = response.get_json()
-
-if response.status_code == 200:
-    print("✅ Status Test Passed")
-
-if data["name"] == "Aditya":
-    print("✅ Data Test Passed")
-
-print("✅ CI Test Completed")
+def test_no_json():
+    response = requests.post(f"{BASE_URL}/submit")
+    assert response.status_code == 415
